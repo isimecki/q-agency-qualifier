@@ -1,6 +1,7 @@
 package hr.igor.simecki.q_agencyqualifier.dto;
 
 import hr.igor.simecki.q_agencyqualifier.model.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
@@ -26,6 +27,7 @@ public class EmailDto {
     @Pattern(regexp = "^(([\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4})\\,*)+$", message = "invalid email pattern")
     private String cc;
 
+    @NotBlank(message = "Required field")
     private String importance;
 
     private List<String> attachment;

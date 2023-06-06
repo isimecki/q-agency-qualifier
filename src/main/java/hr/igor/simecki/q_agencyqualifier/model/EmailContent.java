@@ -11,6 +11,7 @@ public class EmailContent {
     private Long id;
 
     @Column(name = "content")
+    //:TODO @isimecki implement blind index support for search purposes
 //    @Convert(converter = EmailContentEncryptor.class)
     private String content;
 

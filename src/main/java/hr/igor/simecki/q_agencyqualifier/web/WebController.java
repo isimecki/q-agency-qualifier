@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class WebController {
         this.emailService = emailService;
     }
 
-    @RequestMapping({"/", "/main"})
+    @RequestMapping({"/", "/main", "/reset"})
     public String mainPage(Model model) {
         model.addAttribute(MODEL_ATTRIBUTE_IMPORTANCES, Arrays.stream(Importance.values()).map(Importance::name).collect(Collectors.toList()));
         model.addAttribute(MODEL_ATTRIBUTE_EMAIL, new EmailDto());
@@ -46,12 +47,13 @@ public class WebController {
     }
 
     @PostMapping("/sendEmail")
-    public String sendEmail(@Valid @ModelAttribute(MODEL_ATTRIBUTE_EMAIL) EmailDto emailDto, BindingResult result, HttpServletRequest request) {
+    public String sendEmail(@Valid @ModelAttribute(MODEL_ATTRIBUTE_EMAIL) EmailDto emailDto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
             emailService.saveEmail(emailDto.toEmail());
+            return "redirect:main";
         }
-        String referer = request.getHeader(HTTP_REQUEST_HEADER_REFERER);
-        return "redirect:" + referer;
+        model.addAttribute(MODEL_ATTRIBUTE_IMPORTANCES, Arrays.stream(Importance.values()).map(Importance::name).collect(Collectors.toList()));
+        return "main";
     }
 
     @PostMapping("/fetchEmails")

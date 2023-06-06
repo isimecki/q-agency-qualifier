@@ -36,10 +36,11 @@
     <div class="form-group">
         <label for="importance">Importance</label>
         <select class="form-control" id="importance" th:field="*{importance}">
-            <option value="0">select</option>
+            <option value=" ">select</option>
             <option th:each="importance : ${importances}" th:value="${importance}" th:text="${importance}"></option>
         </select>
     </div>
+        <div class="alert alert-warning" th:if="${#fields.hasErrors('importance')}" th:errors="*{importance}"></div>
     <div class="form-group">
         <label for="content">Content</label>
         <textarea class="form-control" id="content" rows="5"
@@ -49,6 +50,12 @@
         <div class="alert alert-warning" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<form action="#" th:action="@{/reset}">
+    <button type="submit" class="btn btn-primary"
+            th:form-confirm-reset="|Are you sure?|"
+            onclick="return confirm(this.getAttribute('form-confirm-reset'))"
+    >Cancel</button>
 </form>
 
 </body>

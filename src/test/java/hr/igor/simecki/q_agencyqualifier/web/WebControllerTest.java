@@ -54,18 +54,16 @@ public class WebControllerTest {
     @Test
     @Sql(value = "classpath:test-db-scripts/clear-emails.sql", executionPhase = BEFORE_TEST_METHOD)
     public void test_sendEmail_savesToDB() throws Exception {
-        HttpServletRequest mockedServletRequest = Mockito.mock(HttpServletRequest.class);
-        when(mockedServletRequest.getHeader(matches("Referer"))).thenReturn("origin");
         EmailDto emailDto = new EmailDto();
         emailDto.setContent("tets");
         emailDto.setFrom("test@tets.test");
         emailDto.setTo("test@tets.test");
         emailDto.setSubject("test");
         emailDto.setContent("test");
+        emailDto.setImportance("NORMAL");
         this.mockMvc.perform(post("/sendEmail")
-                        .flashAttr("email", emailDto)
-                        .header("Referer", "origin"))
-                .andExpect(result -> assertEquals("redirect:origin", result.getModelAndView().getViewName()));
+                        .flashAttr("email", emailDto))
+                .andExpect(result -> assertEquals("redirect:main", result.getModelAndView().getViewName()));
         assertNotEquals(0, StreamSupport.stream(emailRepository.findAll().spliterator(), false).count());
     }
 

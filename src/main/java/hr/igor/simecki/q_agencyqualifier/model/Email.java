@@ -24,6 +24,8 @@ public class Email {
     private EmailAddress from;
 
     @Column(name = "title")
+    //:TODO @isimecki implement blind index support for search purposes
+//    @Convert(converter = EmailContentEncryptor.class)
     private String title;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
